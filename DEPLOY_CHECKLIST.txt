@@ -1,0 +1,16 @@
+CLOSING EMAS - CHECKLIST SUPABASE ONLINE
+
+[SUDAH] Project URL dipasang ke supabase-config.js
+[SUDAH] Publishable key dipasang ke supabase-config.js
+[ ] Jalankan reset-dan-install-closing-emas.sql di Supabase SQL Editor
+[ ] Pastikan Auth user area@closingemas.app sudah ada / confirmed
+[ ] Pastikan Auth user outlet@closingemas.app sudah ada / confirmed
+[ ] Login Admin: Area / Area@123!
+[ ] Login Umum: Outlet / Outlet@123!
+[ ] Uji input realisasi dari satu perangkat
+[ ] Buka dari perangkat lain dan pastikan data yang sama tampil
+[ ] Deploy seluruh file frontend ke hosting statis
+
+CATATAN:
+- Jangan taruh service_role key di frontend.
+- Script reset hanya menghapus object aplikasi Closing Emas, bukan seluruh project Supabase.

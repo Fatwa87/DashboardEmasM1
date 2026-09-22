@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Closing Emas • Area Medan 1</title>
+  <meta name="description" content="Dashboard, input realisasi, dan pengaturan master data closing emas." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="modern-ui.css" />
+</head>
+<body>
+  <section class="login-screen" id="loginScreen" aria-label="Login Closing Emas">
+    <div class="login-glow login-glow-one"></div>
+    <div class="login-glow login-glow-two"></div>
+    <div class="login-shell">
+      <div class="login-brand-panel">
+        <div class="login-brand-identity"><div class="login-brand-mark">◆</div><span>Closing Emas<small>Performance Workspace</small></span></div>
+        <span class="login-kicker">AREA MEDAN 1</span>
+        <h1>Setiap realisasi,<br> langkah menuju<br><em>pencapaian besar.</em></h1>
+        <p>Monitoring realisasi, kualitas portofolio emas, dan status pengisian outlet dalam satu dashboard.</p>
+        <div class="gold-illustration" aria-hidden="true">
+          <div class="gold-orbit orbit-one"></div><div class="gold-orbit orbit-two"></div>
+          <div class="gold-bar gold-bar-back"><span>EMAS</span><b>999.9</b></div>
+          <div class="gold-bar gold-bar-front"><span>CLOSING EMAS</span><b>Au</b><small>GROW TOGETHER</small></div>
+          <span class="gold-spark spark-one">✦</span><span class="gold-spark spark-two">✧</span>
+          <div class="illustration-caption"><span></span> Satu area. Satu tujuan.</div>
+        </div>
+        <div class="login-feature-list">
+          <span><b>01</b> Realisasi Closing Emas</span>
+          <span><b>02</b> Monitoring KOL 1, LAR & NPL</span>
+          <span><b>03</b> Status Pengisian Outlet</span>
+        </div>
+      </div>
+      <div class="login-card">
+        <div class="login-card-head">
+          <span class="login-lock">⌁</span>
+          <div><span>WORKSPACE AREA MEDAN 1</span><h2>Selamat datang kembali.</h2><p>Masuk untuk memantau pencapaian dan mengelola realisasi emas Anda.</p></div>
+        </div>
+        <form id="loginForm" class="login-form" autocomplete="off">
+          <label>Username
+            <div class="login-input-wrap"><span>◉</span><input id="loginUsername" name="username" type="text" required autocomplete="username" placeholder="Masukkan username" /></div>
+          </label>
+          <label>Password
+            <div class="login-input-wrap"><span>◆</span><input id="loginPassword" name="password" type="password" required autocomplete="current-password" placeholder="Masukkan password" /><button id="togglePasswordBtn" type="button" class="password-toggle" aria-label="Tampilkan password">👁</button></div>
+          </label>
+          <div class="login-error hidden" id="loginError" role="alert">Username atau password tidak sesuai.</div>
+          <button class="login-submit" type="submit"><span>Masuk Dashboard</span><b>→</b></button>
+        </form>
+        <p class="login-help">Belum memiliki akses? Hubungi administrator area.</p>
+        <div class="login-foot"><span class="online-dot"></span> Database online • Supabase</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-layout auth-locked" id="appLayout">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand">
+        <div class="side-logo">◆</div>
+        <div>
+          <strong>Closing Emas</strong>
+          <span>Area Medan 1</span>
+        </div>
+      </div>
+
+      <nav class="side-nav" aria-label="Menu utama">
+        <p class="nav-section-label">WORKSPACE</p>
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">▦</span><span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="input">
+          <span class="nav-icon">＋</span><span>Input Realisasi</span>
+        </button>
+        <button class="nav-item" data-page="mulia">
+          <span class="nav-icon">✓</span><span>Nasabah Mulia Lunas</span>
+        </button>
+        <p class="nav-section-label">MONITORING PORTOFOLIO</p>
+        <button class="nav-item risk-nav" data-page="kol1">
+          <span class="nav-icon">1</span><span>KOL 1 Emas</span><em id="navKol1Count">0</em>
+        </button>
+        <button class="nav-item risk-nav" data-page="lar">
+          <span class="nav-icon">2</span><span>LAR Emas</span><em id="navLarCount">0</em>
+        </button>
+        <button class="nav-item risk-nav" data-page="npl">
+          <span class="nav-icon">!</span><span>NPL Emas</span><em id="navNplCount">0</em>
+        </button>
+        <p class="nav-section-label" data-admin-only="true">MANAJEMEN</p>
+        <button class="nav-item" data-page="archive" data-admin-only="true">
+          <span class="nav-icon">▤</span><span>Report Realisasi</span>
+        </button>
+        <button class="nav-item" data-page="settings" data-admin-only="true">
+          <span class="nav-icon">⚙</span><span>Pengaturan</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-account">
+          <div class="account-avatar" id="accountAvatar">A</div>
+          <div class="account-copy"><b id="accountName">-</b><span id="accountRole">-</span></div>
+          <button class="logout-button" id="logoutBtn" type="button" title="Keluar">↪</button>
+        </div>
+        <div class="sidebar-info">
+          <div class="online-dot"></div>
+          <div><b>Database Online</b><span>Supabase Cloud</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="topbar-title">
+          <button class="mobile-menu" id="mobileMenuBtn" aria-label="Buka menu" aria-controls="sidebar" aria-expanded="false">☰</button>
+          <div>
+            <p class="breadcrumb">CLOSING EMAS / <span id="pageCrumb">DASHBOARD</span></p>
+            <h1 id="pageTitle">Dashboard Realisasi</h1>
+            <p id="pageSubtitle">Monitoring pencapaian closing emas Area Medan 1</p>
+          </div>
+        </div>
+        <div class="top-actions" id="dashboardFilters">
+          <div class="segmented" id="periodFilter" aria-label="Filter periode">
+            <button data-period="today">Hari Ini</button>
+            <button data-period="7d">7 Hari</button>
+            <button data-period="month" class="active">Bulan Ini</button>
+            <button data-period="year">Tahun Ini</button>
+            <button data-period="all">Semua</button>
+          </div>
+          <div class="dashboard-date-range" aria-label="Range tanggal dashboard">
+            <label>Dari<input id="dashboardStartDate" type="date" /></label>
+            <span class="range-separator">→</span>
+            <label>Sampai<input id="dashboardEndDate" type="date" /></label>
+            <button class="btn btn-ghost btn-compact" id="clearDashboardRangeBtn" type="button">Reset</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- DASHBOARD -->
+        <section class="page active" id="page-dashboard">
+          <div class="dashboard-intro"><div><span class="section-kicker">OVERVIEW KINERJA</span><h2>Langkah kecil. Pencapaian besar.</h2><p>Pantau progres, temukan peluang, dan capai target bersama.</p></div><span class="workspace-badge"><span class="online-dot"></span> Area Medan 1</span></div>
+          <section class="hero-grid">
+            <article class="hero-card achievement-card">
+              <div class="hero-topline">
+                <span class="pill pill-gold">TARGET RKAP BULAN BERJALAN</span>
+                <span class="area-label">Area Medan 1 • <span id="periodLabel">September 2026</span></span>
+              </div>
+              <div class="hero-values">
+                <div>
+                  <span class="eyebrow">Realisasi Closing Emas</span>
+                  <strong id="heroRealization">Rp 0</strong>
+                  <span class="metric-note" id="heroCount">0 akad terealisasi</span>
+                </div>
+                <div class="target-box">
+                  <span class="eyebrow">Target Closing Bulanan</span>
+                  <strong id="heroTarget">Rp 8.000.000.000</strong>
+                  <button class="text-button" id="editTargetBtn">Kelola target →</button>
+                </div>
+              </div>
+              <div class="progress-meta">
+                <span>↗ Capaian: <b id="achievementPct">0%</b></span>
+                <span id="targetStatus">Target berjalan</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" id="achievementBar"></div></div>
+              <div class="progress-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100% Target</span></div>
+            </article>
+
+            <article class="hero-card countdown-card">
+              <div class="count-icon">⌛</div>
+              <span class="eyebrow">HITUNG MUNDUR CLOSING</span>
+              <strong class="countdown-value"><span id="daysLeft">0</span><span class="countdown-unit">hari tersisa</span></strong>
+              <p>Menuju cut-off akhir bulan (<span id="monthEndLabel">30 September</span>)</p>
+              <div class="divider"></div>
+              <span class="motivation">Setiap realisasi membawa kita lebih dekat.</span>
+            </article>
+          </section>
+
+          <section class="stats-grid">
+            <article class="stat-card blue">
+              <div><span class="stat-label">TOTAL NASABAH</span><strong id="totalCustomers">0</strong><small>Nasabah unik</small></div>
+              <div class="stat-icon">👥</div>
+            </article>
+            <article class="stat-card green">
+              <div><span class="stat-label">TOTAL UP</span><strong id="totalUp">Rp 0</strong><small>Akumulasi realisasi</small></div>
+              <div class="stat-icon">💳</div>
+            </article>
+            <article class="stat-card purple">
+              <div><span class="stat-label">RATA-RATA / NASABAH</span><strong id="averageUp">Rp 0</strong><small>Rasio pinjaman rata-rata</small></div>
+              <div class="stat-icon">▦</div>
+            </article>
+            <article class="stat-card amber">
+              <div><span class="stat-label">TOTAL AKAD</span><strong id="totalContracts">0</strong><small>Realisasi tercatat</small></div>
+              <div class="stat-icon">✦</div>
+            </article>
+          </section>
+
+          <section class="dashboard-grid">
+            <article class="panel composition-panel">
+              <div class="panel-heading">
+                <div><h2>Distribusi Komposisi Produk</h2><p>Porsi realisasi berdasarkan jenis produk emas</p></div>
+                <span class="badge" id="productCountBadge">0 Produk</span>
+              </div>
+              <div class="composition-body">
+                <div class="donut-wrap"><div class="donut" id="productDonut"><div class="donut-hole"><span>Realisasi</span><b id="donutTotal">Rp 0</b></div></div></div>
+                <div class="legend" id="productLegend"></div>
+              </div>
+            </article>
+
+            <article class="panel branch-panel">
+              <div class="panel-heading">
+                <div><h2>Top Cabang</h2><p>Kontribusi realisasi terbesar</p></div>
+                <span class="badge">Ranking</span>
+              </div>
+              <div id="branchBars" class="branch-bars"></div>
+            </article>
+          </section>
+
+          <section class="panel outlet-status-panel">
+            <div class="panel-heading outlet-status-heading">
+              <div>
+                <h2>Status Pengisian Outlet</h2>
+                <p>Memantau outlet yang sudah dan belum mengisi realisasi pada periode dashboard yang dipilih.</p>
+              </div>
+              <span class="badge" id="outletStatusBadge">0 / 0 Outlet</span>
+            </div>
+            <div class="outlet-status-grid">
+              <div class="outlet-status-box filled">
+                <div class="outlet-status-title">
+                  <div><span class="status-dot"></span><b>Sudah Mengisi</b></div>
+                  <strong id="filledOutletCount">0</strong>
+                </div>
+                <div class="outlet-list" id="filledOutletList"></div>
+              </div>
+              <div class="outlet-status-box pending">
+                <div class="outlet-status-title">
+                  <div><span class="status-dot"></span><b>Belum Mengisi</b></div>
+                  <strong id="pendingOutletCount">0</strong>
+                </div>
+                <div class="outlet-list" id="pendingOutletList"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- INPUT REALISASI -->
+        <section class="page" id="page-input">
+          <div class="input-layout input-layout-single">
+            <form id="realizationForm" class="panel input-form-panel">
+              <div class="form-hero">
+                <div class="form-hero-icon">✦</div>
+                <div>
+                  <span class="modal-kicker">INPUT REALISASI BARU</span>
+                  <h2>Closing Emas</h2>
+                  <p>Masukkan data transaksi. Cabang, outlet, dan produk mengambil data dari menu Pengaturan.</p>
+                </div>
+              </div>
+
+              <section class="form-section embedded">
+                <div class="section-title"><span>01</span><div><h3>Identitas Nasabah & Cabang</h3><p>Informasi transaksi dan identitas akad.</p></div></div>
+                <div class="form-grid">
+                  <label>Tanggal Pencairan<input required type="date" name="date" id="dateInput" /></label>
+                  <label>Nama Cabang
+                    <select required name="branch" id="branchSelect"><option value="">Pilih cabang</option></select>
+                  </label>
+                  <label>Nama Outlet
+                    <select required name="outlet" id="outletSelect"><option value="">Pilih outlet</option></select>
+                  </label>
+                  <label>Nama Nasabah<input required type="text" name="customer" placeholder="Nama lengkap nasabah" /></label>
+                  <label class="span-2">No. Kredit (Akad)<input required type="text" name="contract" placeholder="Contoh: AKD-EMAS-2026-00125" /></label>
+                </div>
+              </section>
+
+              <section class="form-section embedded">
+                <div class="section-title"><span>02</span><div><h3>Parameter Produk & Nominal Plafon</h3><p>Detail produk, tenor, dan uang pinjaman (UP).</p></div></div>
+                <div class="form-grid">
+                  <label>Jenis Produk
+                    <select required name="product" id="productSelect"><option value="">Pilih produk</option></select>
+                  </label>
+                  <label>Tenor (Bulan)<input required type="number" min="1" max="120" name="tenor" placeholder="Contoh: 12" /></label>
+                  <label class="span-2">UP — Uang Pinjaman (Rp)
+                    <div class="money-input"><span>Rp</span><input required type="text" inputmode="numeric" name="amountDisplay" id="amountDisplay" placeholder="0" autocomplete="off" /></div>
+                    <input type="hidden" name="amount" id="amountValue" />
+                  </label>
+                </div>
+              </section>
+
+              <div class="form-footer embedded-footer">
+                <button type="button" class="btn btn-ghost" id="resetFormBtn">Reset</button>
+                <button type="submit" class="btn btn-primary">✓ Simpan Realisasi</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- DAFTAR NASABAH MULIA LUNAS -->
+        <section class="page" id="page-mulia">
+          <section class="settings-grid mulia-top-grid">
+
+
+            <article class="panel settings-card mulia-summary-card">
+              <div class="settings-card-head">
+                <div class="settings-icon gold">◎</div>
+                <div><h2>Ringkasan Data Mulia Lunas</h2><p>Upload CSV dikelola dari menu Pengaturan. Data tersimpan online di Supabase dan dapat diakses dari perangkat lain setelah login.</p></div>
+              </div>
+              <div class="mulia-summary-grid">
+                <div><span>Total Nasabah</span><b id="muliaTotalRows">0</b></div>
+                <div><span>Kolom Data</span><b id="muliaTotalColumns">0</b></div>
+                <div><span>Terakhir Import</span><b id="muliaLastImport">-</b></div>
+              </div>
+              <p class="mulia-note">Duplikat baris yang sama persis akan otomatis diabaikan saat upload.</p>
+            </article>
+          </section>
+
+          <section class="panel records-panel mulia-records-panel">
+            <div class="panel-heading records-heading">
+              <div>
+                <div class="section-badge">DATABASE MULIA LUNAS</div>
+                <h2>Daftar Nasabah Mulia Lunas</h2>
+                <p>Kolom tabel mengikuti header CSV yang di-upload melalui menu Pengaturan.</p>
+              </div>
+              <div class="mulia-toolbar">
+                <select class="filter-select" id="muliaBranchFilter" aria-label="Filter cabang Mulia Lunas"><option value="">Semua Cabang</option></select>
+                <select class="filter-select" id="muliaUnitFilter" aria-label="Filter unit Mulia Lunas"><option value="">Semua Unit / Outlet</option></select>
+                <div class="search-box">⌕ <input id="muliaSearchInput" type="search" placeholder="Cari semua data..." /></div>
+                <button class="btn btn-secondary" id="muliaExportBtn" type="button">⇩ Export CSV</button>
+                <button class="btn btn-secondary" id="muliaPdfBtn" type="button">▣ Cetak PDF</button>
+                <button class="btn btn-danger" id="muliaDeleteAllBtn" type="button">✕ Hapus Semua</button>
+              </div>
+            </div>
+            <div class="table-wrap mulia-table-wrap">
+              <table class="mulia-table">
+                <thead id="muliaHead"></thead>
+                <tbody id="muliaBody"></tbody>
+              </table>
+              <div class="empty-state hidden" id="muliaEmptyState"><div class="empty-icon">◇</div><h3>Belum ada data Mulia Lunas</h3><p>Upload file CSV melalui menu “Pengaturan” untuk menambahkan daftar nasabah.</p></div>
+            </div>
+          </section>
+        </section>
+
+
+        <!-- KOL 1 EMAS -->
+        <section class="page" id="page-kol1">
+          <section class="risk-summary-grid">
+            <article class="risk-summary-card emerald"><span>DATA KOL 1</span><b id="kol1Total">0</b><small>Kolektibilitas 1 • tunggakan 1–10 hari</small></article>
+            <article class="risk-summary-card"><span>OUTLET TERDAMPAK</span><b id="kol1Outlets">0</b><small>Outlet unik</small></article>
+            <article class="risk-summary-card"><span>CABANG TERDAMPAK</span><b id="kol1Branches">0</b><small>Cabang unik</small></article>
+            <article class="risk-summary-card"><span>IMPORT TERAKHIR</span><b class="date-value" id="kol1Imported">-</b><small>Snapshot Excel terakhir</small></article>
+          </section>
+          <section class="panel risk-records-panel">
+            <div class="panel-heading records-heading">
+              <div><div class="section-badge">KOL 1 EMAS</div><h2>Tunggakan 1 s.d. 10 Hari</h2><p>Otomatis difilter dari file Excel: KOLEKTIBILITAS = 1 dan HARI_TUNGGAKAN = 1–10.</p></div>
+              <div class="risk-toolbar"><select class="filter-select" id="kol1BranchFilter" aria-label="Filter cabang KOL 1"><option value="">Semua Cabang</option></select><select class="filter-select" id="kol1UnitFilter" aria-label="Filter unit KOL 1"><option value="">Semua Unit / Outlet</option></select><div class="search-box">⌕ <input id="kol1Search" type="search" placeholder="Cari CIF, nasabah, kontrak, outlet..." /></div><button class="btn btn-secondary" id="kol1Export" type="button">⇩ Export CSV</button><button class="btn btn-secondary" id="kol1Pdf" type="button">▣ Cetak PDF</button></div>
+            </div>
+            <div class="table-wrap risk-table-wrap"><table class="risk-table"><thead id="kol1Head"></thead><tbody id="kol1Body"></tbody></table><div class="empty-state hidden" id="kol1Empty"><div class="empty-icon">◇</div><h3>Belum ada data KOL 1 Emas</h3><p>Upload satu file Excel portofolio emas melalui menu Pengaturan.</p></div></div>
+          </section>
+        </section>
+
+        <!-- LAR EMAS -->
+        <section class="page" id="page-lar">
+          <section class="risk-summary-grid">
+            <article class="risk-summary-card amber"><span>DATA LAR</span><b id="larTotal">0</b><small>Kolektibilitas 2 • tunggakan 11–30 hari</small></article>
+            <article class="risk-summary-card"><span>OUTLET TERDAMPAK</span><b id="larOutlets">0</b><small>Outlet unik</small></article>
+            <article class="risk-summary-card"><span>CABANG TERDAMPAK</span><b id="larBranches">0</b><small>Cabang unik</small></article>
+            <article class="risk-summary-card"><span>IMPORT TERAKHIR</span><b class="date-value" id="larImported">-</b><small>Snapshot Excel terakhir</small></article>
+          </section>
+          <section class="panel risk-records-panel">
+            <div class="panel-heading records-heading">
+              <div><div class="section-badge amber-text">LAR EMAS</div><h2>Tunggakan 11 s.d. 30 Hari</h2><p>Otomatis difilter dari file Excel: KOLEKTIBILITAS = 2 dan HARI_TUNGGAKAN = 11–30.</p></div>
+              <div class="risk-toolbar"><select class="filter-select" id="larBranchFilter" aria-label="Filter cabang LAR"><option value="">Semua Cabang</option></select><select class="filter-select" id="larUnitFilter" aria-label="Filter unit LAR"><option value="">Semua Unit / Outlet</option></select><div class="search-box">⌕ <input id="larSearch" type="search" placeholder="Cari CIF, nasabah, kontrak, outlet..." /></div><button class="btn btn-secondary" id="larExport" type="button">⇩ Export CSV</button><button class="btn btn-secondary" id="larPdf" type="button">▣ Cetak PDF</button></div>
+            </div>
+            <div class="table-wrap risk-table-wrap"><table class="risk-table"><thead id="larHead"></thead><tbody id="larBody"></tbody></table><div class="empty-state hidden" id="larEmpty"><div class="empty-icon">◇</div><h3>Belum ada data LAR Emas</h3><p>Upload satu file Excel portofolio emas melalui menu Pengaturan.</p></div></div>
+          </section>
+        </section>
+
+        <!-- NPL EMAS -->
+        <section class="page" id="page-npl">
+          <section class="risk-summary-grid">
+            <article class="risk-summary-card red"><span>DATA NPL</span><b id="nplTotal">0</b><small>Kolektibilitas 3 s.d. 5</small></article>
+            <article class="risk-summary-card"><span>OUTLET TERDAMPAK</span><b id="nplOutlets">0</b><small>Outlet unik</small></article>
+            <article class="risk-summary-card"><span>CABANG TERDAMPAK</span><b id="nplBranches">0</b><small>Cabang unik</small></article>
+            <article class="risk-summary-card"><span>IMPORT TERAKHIR</span><b class="date-value" id="nplImported">-</b><small>Snapshot Excel terakhir</small></article>
+          </section>
+          <section class="panel risk-records-panel">
+            <div class="panel-heading records-heading">
+              <div><div class="section-badge red-text">NPL EMAS</div><h2>Kolektibilitas 3 s.d. 5</h2><p>Otomatis difilter dari file Excel berdasarkan KOLEKTIBILITAS 3, 4, atau 5.</p></div>
+              <div class="risk-toolbar"><select class="filter-select" id="nplBranchFilter" aria-label="Filter cabang NPL"><option value="">Semua Cabang</option></select><select class="filter-select" id="nplUnitFilter" aria-label="Filter unit NPL"><option value="">Semua Unit / Outlet</option></select><div class="search-box">⌕ <input id="nplSearch" type="search" placeholder="Cari CIF, nasabah, kontrak, outlet..." /></div><button class="btn btn-secondary" id="nplExport" type="button">⇩ Export CSV</button><button class="btn btn-secondary" id="nplPdf" type="button">▣ Cetak PDF</button></div>
+            </div>
+            <div class="table-wrap risk-table-wrap"><table class="risk-table"><thead id="nplHead"></thead><tbody id="nplBody"></tbody></table><div class="empty-state hidden" id="nplEmpty"><div class="empty-icon">◇</div><h3>Belum ada data NPL Emas</h3><p>Upload satu file Excel portofolio emas melalui menu Pengaturan.</p></div></div>
+          </section>
+        </section>
+
+        <!-- REPORT REALISASI -->
+        <section class="page" id="page-archive">
+          <section class="panel records-panel">
+                      <div class="panel-heading records-heading">
+                        <div>
+                          <div class="section-badge">REPORT REALISASI</div>
+                          <h2>Report Realisasi Closing Emas</h2>
+                          <p>Filter, ekspor, cetak PDF, dan kelola data realisasi dari satu halaman laporan.</p>
+                        </div>
+                        <div class="records-actions">
+                          <div class="archive-filter-bar">
+                            <div class="date-range-group">
+                              <label>Dari Tanggal<input id="archiveStartDate" type="date" /></label>
+                              <span class="range-separator">→</span>
+                              <label>Sampai Tanggal<input id="archiveEndDate" type="date" /></label>
+                              <button class="btn btn-ghost btn-compact" id="clearArchiveRangeBtn" type="button">Reset Range</button>
+                            </div>
+                            <div class="archive-tools">
+                              <div class="search-box">⌕ <input id="searchInput" type="search" placeholder="Cari nasabah / akad / cabang" /></div>
+                              <button class="btn btn-secondary" id="exportBtn" type="button">⇩ Export CSV</button>
+                              <button class="btn btn-secondary" id="printPdfBtn" type="button">▣ Cetak PDF</button>
+                              <button class="btn btn-danger" id="deleteAllBtn" type="button">✕ Hapus Semua</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="table-wrap">
+                        <table>
+                          <thead><tr><th>Tanggal</th><th>Cabang / Outlet</th><th>Nasabah</th><th>No. Kredit (Akad)</th><th>Produk</th><th>Tenor</th><th class="align-right">UP</th><th></th></tr></thead>
+                          <tbody id="recordsBody"></tbody>
+                        </table>
+                        <div class="empty-state hidden" id="emptyState"><div class="empty-icon">◇</div><h3>Belum ada data</h3><p>Gunakan menu “Input Realisasi” untuk menambahkan closing emas.</p></div>
+                      </div>
+                    </section>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="page" id="page-settings">
+          <section class="settings-grid target-settings-grid">
+            <article class="panel settings-card target-settings" id="targetSettingsCard">
+              <div class="settings-card-head">
+                <div class="settings-icon gold">◎</div>
+                <div><h2>Target Dashboard</h2><p>Atur target closing bulanan yang digunakan untuk kalkulasi capaian.</p></div>
+              </div>
+              <form id="targetForm" class="inline-setting-form">
+                <label>Target Bulanan (Rp)
+                  <div class="money-input"><span>Rp</span><input required type="text" inputmode="numeric" id="targetDisplay" autocomplete="off" /></div>
+                  <input type="hidden" id="targetValue" />
+                </label>
+                <button type="submit" class="btn btn-primary">Simpan Target</button>
+              </form>
+            </article>
+          </section>
+
+
+          <section class="settings-grid portfolio-upload-grid">
+            <article class="panel settings-card portfolio-upload-card">
+              <div class="settings-card-head">
+                <div class="settings-icon red">⇧</div>
+                <div><h2>Upload Excel Monitoring Emas</h2><p>Upload satu file <b>.xlsx</b>. Sistem akan membaca worksheet pertama lalu otomatis membagi data ke menu KOL 1 Emas, LAR Emas, dan NPL Emas.</p></div>
+              </div>
+              <div class="portfolio-rules">
+                <span><b>KOL 1</b> Kolektibilitas 1 + tunggakan 1–10 hari</span>
+                <span><b>LAR</b> Kolektibilitas 2 + tunggakan 11–30 hari</span>
+                <span><b>NPL</b> Kolektibilitas 3–5</span>
+              </div>
+              <label class="upload-zone portfolio-upload-zone" for="portfolioExcelInput">
+                <input type="file" id="portfolioExcelInput" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                <span class="upload-icon">⇧</span>
+                <div><b>Pilih Excel Data Emas</b><small id="portfolioFileHint">Contoh struktur: DATA MULIA.xlsx • tersimpan online di Supabase</small></div>
+                <span class="upload-status" id="portfolioUploadStatus">Belum ada file</span>
+              </label>
+              <div class="portfolio-import-summary">
+                <div><span>KOL 1</span><b id="settingsKol1Count">0</b></div>
+                <div><span>LAR</span><b id="settingsLarCount">0</b></div>
+                <div><span>NPL</span><b id="settingsNplCount">0</b></div>
+                <div><span>Import</span><b id="settingsPortfolioImport">-</b></div>
+              </div>
+              <div class="upload-actions portfolio-actions"><button class="btn btn-danger" id="clearPortfolioBtn" type="button">✕ Hapus Data Monitoring</button></div>
+            </article>
+          </section>
+
+          <div class="settings-section-heading">
+            <div>
+              <span class="section-badge">IMPORT MASTER DATA</span>
+              <h2>Upload CSV Terpisah</h2>
+              <p>Master produk, cabang/outlet, dan nasabah Mulia Lunas dipisahkan dari upload Excel monitoring emas.</p>
+            </div>
+          </div>
+
+          <section class="settings-grid csv-upload-grid">
+            <article class="panel settings-card csv-card">
+              <div class="settings-card-head">
+                <div class="settings-icon green">⇧</div>
+                <div><h2>Upload Master Produk</h2><p>Import daftar nama produk dari file CSV khusus produk.</p></div>
+              </div>
+              <div class="csv-format"><b>Format template:</b> Nama Produk</div>
+              <label class="upload-zone" for="productCsvInput">
+                <input type="file" id="productCsvInput" accept=".csv,text/csv" />
+                <span class="upload-icon">⇧</span>
+                <b>Pilih CSV Produk</b>
+                <small>Kolom wajib: Nama Produk</small>
+              </label>
+              <div class="upload-actions">
+                <button class="btn btn-secondary" id="downloadProductTemplateBtn" type="button">⇩ Template Produk</button>
+              </div>
+            </article>
+
+            <article class="panel settings-card csv-card">
+              <div class="settings-card-head">
+                <div class="settings-icon blue">⇧</div>
+                <div><h2>Upload Master Cabang & Outlet</h2><p>Import pasangan nama cabang dan nama outlet dari file CSV khusus lokasi.</p></div>
+              </div>
+              <div class="csv-format"><b>Format template:</b> Nama Cabang, Nama Outlet &nbsp;•&nbsp; Template sudah berisi daftar cabang & outlet Area Medan 1</div>
+              <label class="upload-zone" for="locationCsvInput">
+                <input type="file" id="locationCsvInput" accept=".csv,text/csv" />
+                <span class="upload-icon">⇧</span>
+                <b>Pilih CSV Cabang & Outlet</b>
+                <small>Kolom wajib: Nama Cabang + Nama Outlet</small>
+              </label>
+              <div class="upload-actions">
+                <button class="btn btn-secondary" id="downloadLocationTemplateBtn" type="button">⇩ Template Cabang & Outlet</button>
+              </div>
+            </article>
+          
+
+            <article class="panel settings-card csv-card">
+            <div class="settings-card-head">
+            <div class="settings-icon green">⇧</div>
+            <div><h2>Upload Nasabah Mulia Lunas</h2><p>Masukkan daftar nasabah Mulia yang sudah lunas menggunakan file CSV.</p></div>
+            </div>
+            <div class="csv-format"><b>Format fleksibel:</b> baris pertama dibaca sebagai nama kolom. Template rekomendasi tersedia di bawah.</div>
+            <label class="upload-zone" for="muliaCsvInput">
+            <input type="file" id="muliaCsvInput" accept=".csv,text/csv" />
+            <span class="upload-icon">⇧</span>
+            <div><b>Pilih CSV Nasabah Mulia Lunas</b><small>CSV dengan header pada baris pertama • upload bertahap ke Supabase</small></div>
+            <span class="upload-status" id="muliaUploadStatus">Belum ada file</span>
+            </label>
+            <div class="upload-actions">
+            <button class="btn btn-secondary" id="downloadMuliaTemplateBtn" type="button">⇩ Download Template</button>
+            </div>
+            </article>
+          </section>
+
+          <section class="master-grid">
+            <article class="panel master-card">
+              <div class="panel-heading">
+                <div><h2>Master Produk</h2><p>Tambah atau hapus nama produk secara manual.</p></div>
+                <span class="badge" id="masterProductCount">0 item</span>
+              </div>
+              <form id="addProductForm" class="add-row-form">
+                <input id="newProductInput" required type="text" placeholder="Nama produk baru" />
+                <button class="btn btn-primary" type="submit">＋ Tambah</button>
+              </form>
+              <div class="master-list" id="productMasterList"></div>
+            </article>
+
+            <article class="panel master-card">
+              <div class="panel-heading">
+                <div><h2>Master Cabang & Outlet</h2><p>Outlet disimpan berpasangan dengan cabangnya.</p></div>
+                <span class="badge" id="masterLocationCount">0 item</span>
+              </div>
+              <form id="addLocationForm" class="location-form">
+                <input id="newBranchInput" required type="text" placeholder="Nama cabang" />
+                <input id="newOutletInput" required type="text" placeholder="Nama outlet" />
+                <button class="btn btn-primary" type="submit">＋ Tambah</button>
+              </form>
+              <div class="location-list" id="locationMasterList"></div>
+            </article>
+          </section>
+
+          
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay hidden" id="sidebarOverlay"></div>
+  <div class="toast hidden" id="toast"><span>✓</span><div><b id="toastTitle">Berhasil</b><p id="toastMessage">Data tersimpan.</p></div></div>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="xlsx-mini.js"></script>
+  <script src="app.js"></script>
+  <script src="modern-ui.js"></script>
+</body>
+</html>
