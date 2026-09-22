@@ -1,6 +1,6 @@
 /* Presentation enhancements; no database or authentication operations. */
 (() => {
-  productColors.splice(0,productColors.length,'#50866b','#bfa267','#849ea5','#9c8cab','#bf8970','#a2b17f','#567b79','#879085');
+  productColors.splice(0,productColors.length,'#d5b478','#819fc5','#aa9bbc','#779e91','#b98878','#9ba978','#779ca6','#b1a28d');
   const paths = {
     gem:'<path d="m12 3 9 7-9 11L3 10l9-7Z"/><path d="M3 10h18M12 3l4 7-4 11-4-11 4-7Z"/>',
     grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',

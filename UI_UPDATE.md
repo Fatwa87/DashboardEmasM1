@@ -1,12 +1,12 @@
-# UI Closing Emas
+# Closing Emas — Midnight Gold
 
-Desain baru sudah diterapkan pada index.html melalui modern-ui.css dan modern-ui.js.
+Tema gelap–emas untuk halaman login, dashboard, input realisasi, monitoring, report, dan pengaturan.
 
-- Tema hijau, krem, dan emas; ilustrasi emas lokal tanpa layanan gambar eksternal.
-- Login, dashboard, formulir, tabel, dan navigasi responsif.
-- Kode app.js, styles.css, serta konfigurasi dan database Supabase tidak diubah.
-- Sertakan modern-ui.css dan modern-ui.js bersama file website saat mengunggah pembaruan.
-- Cadangan HTML awal: .ui-backup/index.html.
-- Preview di .ui-preview memakai data contoh lokal, bukan data produksi.
-- Pengujian: delapan halaman pada lebar 320, 390, 768, 1024, dan 1440 piksel; navigasi HP, password, hak akses menu, filter periode, dan keadaan kosong. Tidak ada error JavaScript browser.
-- Login ke Supabase dan penyimpanan data produksi tidak diuji dalam pemeriksaan UI ini.
+- Login satu kartu dengan lebar maksimum 400 piksel (400 × 530 piksel pada pemeriksaan desktop).
+- Palet emas untuk navigasi, tombol utama, progres pencapaian, dan grafik.
+- Semua halaman mengikuti ukuran layar desktop dan HP.
+- CSS dimuat berurutan: styles.css, modern-ui.css, premium-theme.css.
+- modern-ui.js menyediakan ikon dan penyesuaian presentasi.
+- app.js dan konfigurasi Supabase tidak diubah oleh pembaruan tema ini.
+
+Validasi lokal: delapan halaman pada lebar 320, 390, 768, 1024, dan 1440 piksel; login pada layar pendek; navigasi HP; tombol password; hak akses menu; filter periode; dan kondisi tanpa data. Pengujian menggunakan data contoh terisolasi dan memblokir permintaan database eksternal. Login serta penyimpanan data produksi tidak diuji.
